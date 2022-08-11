@@ -43,6 +43,7 @@ function main() {
 
     var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
     var resolutionUniformLocation = gl.getUniformLocation(program, "u_resolution");
+    var colorUniformLocation = gl.getUniformLocation(program, "u_color");
     var positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     var positions = [
@@ -80,7 +81,31 @@ function main() {
     var primitiveType = gl.TRIANGLES;
     var offset = 0;
     var count = 6;
-    gl.drawArrays(primitiveType, offset, count);
+    for (var ii = 0; ii < 50; ++ii) {
+        setRectangle(gl,randomInt(300), randomInt(300), randomInt(300), randomInt(300));
+        gl.uniform4f(colorUniformLocation, Math.random(), Math.random(), Math.random(), 1);
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+    }
 }
 
+function randomInt(range) {
+    return Math.floor(Math.random() * range);
+}
+
+function setRectangle(gl, x, y, width, height) {
+    var x1 = x;
+    var x2 = x + width;
+    var y1 = y;
+    var y2 = y + height;
+
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+        x1, y1,
+        x2, y1,
+        x1, y2, 
+        x1, y2,
+        x2, y1,
+        x2, y2
+
+    ]), gl.STATIC_DRAW);
+}
 main()
