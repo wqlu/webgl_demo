@@ -42,12 +42,16 @@ function main() {
     var program = createProgram(gl, vertexShader, fragmentShader);
 
     var positionAttributeLocation = gl.getAttribLocation(program, "a_position");
+    var resolutionUniformLocation = gl.getUniformLocation(program, "u_resolution");
     var positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     var positions = [
-        0, 0,
-        0, 0.5,
-        0.5, 0
+        10, 20, 
+        80, 20,
+        10, 30,
+        10, 30,
+        80, 20,
+        80, 30,
     ];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
 
@@ -62,7 +66,8 @@ function main() {
 
     gl.enableVertexAttribArray(positionAttributeLocation);
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
- 
+    gl.uniform2f(resolutionUniformLocation, gl.canvas.width, gl.canvas.height);
+
     // 告诉属性怎么从positionBuffer中读取数据 (ARRAY_BUFFER)
     var size = 2;          // 每次迭代运行提取两个单位数据
     var type = gl.FLOAT;   // 每个单位的数据类型是32位浮点型
@@ -74,7 +79,7 @@ function main() {
     
     var primitiveType = gl.TRIANGLES;
     var offset = 0;
-    var count = 3;
+    var count = 6;
     gl.drawArrays(primitiveType, offset, count);
 }
 
